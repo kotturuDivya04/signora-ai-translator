@@ -184,7 +184,7 @@ const SIGN_MAP = {
      ===================== */
   // English
   please: "/static/assets/Animations/please.glb",
-  sorry: "/staic/assets/Animations/sorry.glb",
+  sorry: "/static/assets/Animations/sorry.glb",
   thank: "/static/assets/Animations/thankyou.glb",
   thanks: "/static/assets/Animations/thankyou.glb",
   welcome: "/static/assets/Animations/welcome.glb",
@@ -192,7 +192,7 @@ const SIGN_MAP = {
   // Hindi
   kripya: "/static/assets/Animations/please.glb",
   maaf: "/static/assets/Animations/sorry.glb",
-  shukriya: "/staic/assets/Animations/thankyou.glb",
+  shukriya: "/static/assets/Animations/thankyou.glb",
   dhanyavaad: "/static/assets/Animations/thankyou.glb",
   swagat: "/static/assets/Animations/welcome.glb",
 
@@ -259,7 +259,6 @@ const SIGN_MAP = {
   aam: "/static/assets/Animations/yes.glb",
   seri: "/static/assets/Animations/ok.glb"
 };
-
 function playSentence(words, index = 0) {
     if (index >= words.length) return resetToIdle();
 
@@ -267,15 +266,24 @@ function playSentence(words, index = 0) {
     if (!file) return playSentence(words, index + 1);
 
     loader.load(file, (gltf) => {
+        if (!gltf.animations || !gltf.animations.length) {
+            console.warn("⚠ No animation in", file);
+            return playSentence(words, index + 1);
+        }
+
         playClip(gltf.animations[0], () => {
             playSentence(words, index + 1);
         });
     });
 }
 
+
 /* ------------------ SPEECH → SIGN (EXTENDED, NOT REPLACED) ------------------ */
 window.signWord = (input) => {
-    if (!avatar) return;
+    if (!avatar || !mixer) {
+        console.warn("Avatar not ready yet");
+        return;
+    }
 
     const words = input
         .toLowerCase()

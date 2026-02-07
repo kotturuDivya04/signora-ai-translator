@@ -10,7 +10,7 @@ let suppressPredictionUI = false;
 const MAX_MOTION_FRAMES = 30;
 let motionFrameCount = 0; 
 let stillFrameCounter = 0;   // 🔑 counts how many continuous still frames
-
+ 
 
 // ================= STABILITY =================
 let lastDetectedHandCount = null;
@@ -272,7 +272,7 @@ setInterval(async () => {
       }
 
       try {
-        const res = await fetch("http://127.0.0.1:5000/predict", {
+        const res = await fetch("/predict", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -371,7 +371,7 @@ if (Date.now() - handStaticSince < STATIC_TIME_REQUIRED) return;
 if (predictionLocked) return;
 
   try {
-    const res = await fetch("http://127.0.0.1:5000/predict", {
+    const res = await fetch("/predict", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -731,7 +731,10 @@ function speakPrediction(text) {
   u.lang = langCode;
 
   // 🔑 Get fresh voices list (important)
-  const voices = speechSynthesis.getVoices();
+ const voices = availableVoices.length
+  ? availableVoices
+  : speechSynthesis.getVoices();
+
 
   let voice = null;
 
