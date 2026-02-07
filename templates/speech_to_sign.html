@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signora - Speech to Sign</title>
+     <link rel="stylesheet" href="/static/styles/style.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+</head>
+<body class="work-bg">
+
+<header class="app-header">
+    <button class="navbar-back-btn" onclick="window.location.href='home.html'">←</button>
+    <div class="logo-container">
+      <img src="/static/assets/logo.png" alt="Signora Logo" class="app-logo">
+        <span class="app-name">Signora</span>
+    </div>
+</header>
+
+<div class="page-container">
+
+    <h1 class="page-title">Speech → Sign (Avatar Mode)</h1>
+
+    <button class="mic-btn" id="mic-btn">🎤 Start Listening</button>
+
+    <div class="speech-box">
+        <h3>Recognized Speech:</h3>
+        <p id="speech-text">Click button and speak...</p>
+    </div>
+
+    <div class="avatar-box" id="avatarBox">
+        <div id="loading-text">Loading Avatar...</div>
+    </div>
+
+</div>
+
+
+<script type="module" src="/static/js/script-avatar.js"></script>
+
+<script>
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  
+  if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-IN";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      const micBtn = document.getElementById("mic-btn");
+      const speechText = document.getElementById("speech-text");
+
+      micBtn.addEventListener("click", () => {
+        speechText.textContent = "🎤 Listening... Speak now!";
+        speechText.style.color = "blue";
+        recognition.start();
+      });
+
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        speechText.textContent = "🗣 " + text;
+        speechText.style.color = "#333";
+
+        if (window.signWord) {
+            window.signWord(text);
+        } else {
+            console.warn("Avatar not ready yet.");
+        }
+      };
+
+      recognition.onerror = (e) => {
+        speechText.textContent = "⚠ Error: " + e.error;
+        speechText.style.color = "red";
+      };
+
+  } else {
+      alert("Sorry, your browser does not support Speech Recognition.");
+  }
+</script>
+
+</body>
+</html>

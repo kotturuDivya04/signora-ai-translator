@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About & Help | Signora</title>
+    <link rel="stylesheet" href="/static/styles/style.css">
+</head>
+
+<body class="about-bg">
+
+    <!-- NAVBAR -->
+    <header class="app-header">
+        <div class="logo-container">
+            <button class="navbar-back-btn" onclick="history.back()">←</button>
+           <img src="/static/assets/logo.png" alt="Signora Logo" class="app-logo">
+            <span class="app-name">Signora</span>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="about-content">
+
+        <h1 class="about-heading">About & Help</h1>
+        <p class="about-subtext">Tap a panel to read more</p>
+
+        <div class="panel-row">
+
+            <!-- ABOUT PANEL -->
+            <div class="panel-card" onclick="this.classList.toggle('flipped')">
+                <div class="panel-inner">
+
+                    <div class="panel-front">
+                        <h2>💬 About Signora</h2>
+                        <p>Our mission & vision</p>
+                    </div>
+
+                    <div class="panel-back">
+                        <h2>About Signora</h2>
+                        <p>
+                            Signora is an AI-powered accessibility project helping 
+                            bridge communication between Deaf/Mute individuals 
+                            and hearing people.
+                        </p>
+                        <p>
+                            We use hand gesture recognition, speech-to-text, 
+                            and animated sign visuals.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- HELP PANEL -->
+            <div class="panel-card" onclick="this.classList.toggle('flipped')">
+                <div class="panel-inner">
+
+                    <div class="panel-front panel-help-front">
+                        <h2>🆘 Help & Support</h2>
+                        <p>Guidelines & Troubleshooting</p>
+                    </div>
+
+                    <div class="panel-back panel-help-back">
+                        <h2>Help & Support</h2>
+                        <p>✔ Allow camera access</p>
+                        <p>✔ Use a well-lit environment</p>
+                        <p>✔ Keep hand inside frame</p>
+                        <p>Email: <b>support@signora.com</b></p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

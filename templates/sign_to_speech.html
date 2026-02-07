@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signora - Sign to Speech</title>
+     <link rel="stylesheet" href="/static/styles/style.css">
+</head>
+<body class="work-bg">
+  
+<!-- ============================
+     TOP NAVBAR
+============================== -->
+<header class="app-header">
+
+    <button class="navbar-back-btn" onclick="window.location.href='home.html'">←</button>
+
+    <div class="logo-container">
+       <img src="/static/assets/logo.png" alt="Signora Logo" class="app-logo">
+        <span class="app-name">Signora</span>
+    </div>
+
+</header>
+
+<!-- ============================
+     MAIN CONTAINER
+     
+============================== -->
+<div class="page-container">
+
+    <h1 class="page-title">Sign → Speech Translation</h1>
+
+    <!-- ============================
+         CAMERA AREA
+    =============================== -->
+    <div class="camera-box">
+        <canvas id="overlay"></canvas>
+    </div>
+
+    <!-- hidden video -->
+    <video id="camera" autoplay playsinline style="display:none;"></video>
+<!-- ============================
+         DEVELOPER DATA COLLECTION
+         (STATIC + MOTION)
+    =============================== -->
+    <div class="dev-tools">
+        <h3>Developer Tools (Data Collection)</h3>
+
+        <label for="labelSelect">Select Label: </label>
+        <select id="labelSelect" class="dev-select">
+            <option value="HI">HI</option>
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+            <option value="PLEASE">PLEASE</option>
+            <option value="SORRY">SORRY</option>
+            <option value="HELP">HELP</option>
+            <option value="YOU">YOU</option>
+            <option value="HOPE">HOPE</option>
+            <option value="OKAY">OKAY</option>
+            <option value="WATER">WATER</option>
+            <!-- Alphabets (A–Z) -->
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+         <option value="D">D</option>
+        <option value="E">E</option>
+         <option value="F">F</option>
+         <option value="G">G</option>
+          <option value="H">H</option>
+          <option value="I">I</option>
+          <option value="J">J</option>
+          <option value="K">K</option>
+          <option value="L">L</option>
+          <option value="M">M</option>
+          <option value="N">N</option>
+          <option value="O">O</option>
+          <option value="P">P</option>
+        <option value="Q">Q</option>
+        <option value="R">R</option>
+        <option value="S">S</option>
+        <option value="T">T</option>
+        <option value="U">U</option>
+        <option value="V">V</option>
+        <option value="W">W</option>
+        <option value="X">X</option>
+        <option value="Y">Y</option>
+        <option value="Z">Z</option>
+            
+ <!-- Core actions -->
+<option value="THANKYOU">THANK YOU</option>
+<option value="HELP">HELP</option>
+<option value="WANT">WANT</option>
+<option value="COME">COME</option>
+<option value="GO">GO</option>
+<option value="WAIT">WAIT</option>
+
+<!-- Question words -->
+<option value="HOW">HOW</option>
+<option value="WHAT">WHAT</option>
+
+<!-- Identity / reference -->
+<option value="NAME">NAME</option>
+<option value="ME">ME</option>
+
+<!-- Needs -->
+<option value="FOOD">FOOD</option>
+
+<!-- Time / context -->
+<option value="NOW">NOW</option>
+</select>
+        <!-- STATIC SAMPLE RECORDING (existing) -->
+        <button id="recordBtn" class="dev-btn">Record Static Sample</button>
+         <button id="staticStopBtn" class="dev-btn">⏹ Stop Static Recording</button>
+        <button id="downloadBtn" class="dev-btn">Download Static CSV</button>
+       
+    <!-- MOTION RECORDING BUTTONS -->
+
+<button id="motionStartBtn" class="dev-btn"
+        onclick="startMotion(labelSelect.value)">
+    ▶ Start Motion Recording
+</button>
+
+<button id="motionStopBtn" class="dev-btn"
+        onclick="stopMotion()">
+    ⏹ Stop Motion Recording
+</button>
+
+<button id="motionDownloadBtn" class="dev-btn"
+        onclick="downloadMotionCSV()">
+    💾 Download Motion CSV
+</button>
+</div>
+<div class="prediction-box">
+  <h2 style="margin-bottom:6px;">
+    Prediction:
+    <span id="prediction">--</span>
+  </h2>
+   <div id="motionCounter" style="margin-top:6px; font-size:18px; color:red;"></div>
+
+  <div style="display:flex; align-items:center; gap:8px;">
+    <!-- Language selector (small & clean) -->
+    <select id="languageSelect"
+            style="height:26px; font-size:13px; padding:2px 6px;">
+      <option value="en">EN</option>
+      <option value="hi">HI</option>
+      <option value="te">TE</option>
+      <option value="ta">TA</option>
+    </select>
+
+    <!-- Speak again -->
+    <button class="speak-btn"
+            onclick="speakPrediction(predictionText.textContent)">
+      🔊 Speak again
+    </button>
+  </div>
+</div>
+
+
+<!-- ============================
+     MediaPipe Libraries
+============================== -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+<!-- ============================
+     Your JS Files
+============================== -->
+<script src="/static/js/script.js"></script>
+
+<script>
+    window.onload = async () => {
+        setupMediaPipe();
+        await startCamera();
+    };
+</script>
+</body>
+</html>

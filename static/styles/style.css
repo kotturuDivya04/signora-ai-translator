@@ -1,0 +1,713 @@
+/* ============================================
+   GLOBAL RESET + FONT
+============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+
+
+/* ============================================
+   SEA BREEZE ANIMATION
+============================================ */
+@keyframes seaBreeze {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ============================================
+   LOGIN PAGE BACKGROUND (GRADIENT WITH ANIMATION)
+============================================ */
+.login-bg {
+    height: 100vh;
+    background: linear-gradient(-45deg, #9780b9, #8d95e6, #cad7ee, #ae7de6);
+    background-size: 400% 400%;
+    animation: seaBreeze 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-logo {
+    width: 120px;       /* adjust as needed */
+    height: 120px;      /* same as width for perfect circle */
+    border-radius: 50%;
+    object-fit: cover;  /* ensures image fills circle */
+    border: 3px solid white;  /* optional — clean border */
+}
+/* ============================================
+   LOGIN BOX (GLASSMORPHISM)
+============================================ */
+.login-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.login-header .login-logo{
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+
+.app-title {
+    font-size: 40px;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tagline {
+    color: #e6e6e6;
+    margin-bottom: 25px;
+}
+
+.login-box {
+    width: 350px;
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    margin: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.input-box {
+    width: 90%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.input-box:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.login-btn {
+    width: 90%;                
+    padding: 12px;
+    margin-top: 15px;
+    background: #ffffff;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #4A3AFF;
+    cursor: pointer;
+    transition: 0.3s ease; 
+}
+
+.login-btn:hover {
+    border-color: #4A3AFF;
+    background: #4A3AFF;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 58, 255, 0.3);
+}
+
+/* ============================================
+   UPDATED LOGIN BOX STYLE (More Professional)
+============================================ */
+.updated-login-box {
+    padding: 35px;
+    margin-top: 20px;
+}
+
+/* Input labels */
+.input-group {
+    text-align: left;
+    width: 90%;
+    margin: 10px auto;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #f5f5f5;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Registration text */
+.register-text {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.register-link {
+    color: #fffcfc;
+    font-size: 15px;
+    font-weight: bolder;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.register-link:hover {
+    color: #4A3AFF;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   HOME PAGE BACKGROUND (SEA BREEZE ANIMATION)
+============================================ */
+.home-bg {
+    background: linear-gradient(-45deg, #78b6f5, #65a3ee, #c3a7f0, #7737dd);
+    background-size: 400% 400%;
+    animation: seaBreeze 15s ease infinite;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* ============================================
+   TOP NAVBAR
+============================================ */
+.app-header {
+    width: 100%;
+    height: 70px;
+    background: #242424;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    padding: 0px 25px;
+    position:fixed;
+    top: 0px;
+    left: 0;
+    z-index: 10;
+    gap:15px
+}
+
+/* Back Arrow Button */
+.navbar-back-btn {
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.navbar-back-btn:hover {
+    color: #d1d1d1;
+    transform: translateX(-3px);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.app-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.app-name {
+    font-size: 26px;
+    color: #fcfcff;
+    font-weight: bold;
+}
+
+
+
+/* ============================================
+   HOME PAGE CARDS
+============================================ */
+.home-container {
+    height: calc(100vh - 70px); /* exclude navbar height */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* vertical centering */
+    align-items: center;      /* horizontal centering */
+    text-align: center;
+    color: white;
+    padding: 40px 0;          /* equal top and bottom spacing */
+
+}
+
+/* TITLE + SUBTEXT */
+.welcome-title {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+
+}
+
+.choose-text {
+    font-size: 20px;
+    opacity: 0.95;
+    margin-bottom: 50px;
+}
+
+/* ============================================
+   BUTTON ROW (CENTERED)
+============================================ */
+.button-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 45px; /* equal spacing between boxes */
+    flex-wrap: nowrap; /* single line on large screens */
+    
+}
+
+/* ============================================
+   BIG BUTTON BOXES (INLINE TEXT + ICON)
+============================================ */
+.mode-btn {
+    width: 420px;
+    height: 130px;
+    padding: 25px 40px;
+    border-radius: 25px;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;  /* center text and icon horizontally */
+    align-items: center;      /* center text and icon vertically */
+    gap: 15px;                /* space between text and emoji */
+    text-align: center;
+
+    transition: 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* TEAL BUTTON */
+.sign-btn {
+    background: #00C3C7;
+}
+.sign-btn:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow:
+        0 0 15px rgba(255, 255, 255, 0.55),
+        0 0 25px rgba(0, 195, 199, 0.45),
+        0 0 35px rgba(0, 195, 199, 0.3);
+}
+
+/* ORANGE BUTTON */
+.speech-btn {
+    background: #E79A40;
+}
+.speech-btn:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow:
+        0 0 15px rgba(255, 255, 255, 0.55),
+        0 0 25px rgba(231, 154, 64, 0.45),
+        0 0 35px rgba(231, 154, 64, 0.3);
+}
+
+/* PURPLE BUTTON */
+.about-btn {
+    background: #8a76ff;
+}
+.about-btn:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow:
+        0 0 15px rgba(255, 255, 255, 0.55),
+        0 0 25px rgba(138, 118, 255, 0.45),
+        0 0 35px rgba(138, 118, 255, 0.3);
+}
+
+/* ICON SIZE */
+.btn-icon {
+    font-size: 32px;
+}
+
+/* ============================================
+   RESPONSIVE LAYOUT
+============================================ */
+@media (max-width: 1200px) {
+    .button-row {
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+    .mode-btn {
+        width: 90%;
+    }
+}
+
+@media (max-width: 600px) {
+    .welcome-title {
+        font-size: 30px;
+    }
+    .choose-text {
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+    .mode-btn {
+        width: 85%;
+        height: 110px;
+        font-size: 18px;
+    }
+    .btn-icon {
+        font-size: 28px;
+    }
+}
+
+
+
+/* ============================================
+   CAMERA + AVATAR PAGES
+============================================ */
+/* =============================================
+   NEW PASTEL ANIMATED BACKGROUND FOR WORK PAGES
+============================================= */
+.work-bg {
+    min-height: 100vh;
+    background: linear-gradient(120deg, #e8f1ff, #e9dbff, #d8e9ff);
+    background-size: 300% 300%;
+    animation: smoothBG 18s ease infinite;
+   
+}
+
+/* Smooth background animation */
+@keyframes smoothBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.page-container {
+    padding-top: 120px;
+    text-align: center;
+}
+
+.page-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #333;
+}
+
+.camera-box {
+    width: 70%;
+    height: 500px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(125,160,202,0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.avatar-box{
+    width: 70%;
+    height: 500px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 18px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(125,160,202,0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+/* Clean Speech Output Box */
+.speech-box {
+    margin: 20px auto;
+    width: 60%;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    
+}
+
+.speech-box h3 {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.speech-box p {
+    color: #666;
+    font-size: 18px;
+}
+
+/* Loading Text inside Avatar Box */
+#loading-text {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    color: #888;
+    transform: translateY(-50%);
+}
+
+
+/* ⭐ MAKE CANVAS FILL FULL BOX ALWAYS */
+.camera-box canvas {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 18px;
+    object-fit: cover;
+    position:absolute;
+    top: 0;
+    left: 0;
+}
+
+/* ============================================
+   CLEAN & CENTERED PREDICTION BOX
+============================================ */
+.prediction-box {
+    width: 60%;
+    padding: 30px 40px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* remove the ugly push */
+    padding-right: 0 !important;
+}
+
+.prediction-box h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+
+
+/* ============================================
+   SPEAK AGAIN BUTTON — CENTERED
+============================================ */
+.speak-btn {
+    margin-top: 12px;
+    padding: 12px 28px;
+    background: #4A3AFF;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    transition: 0.3s ease-in-out;
+}
+
+.speak-btn:hover {
+    background: #372fd1;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(74, 58, 255, 0.35);
+}
+
+
+/* RESPONSIVE OPTIMIZATION */
+@media (max-width: 768px) {
+    .prediction-box {
+        width: 90%;
+        padding: 25px;
+    }
+
+    .prediction-box h2 {
+        font-size: 22px;
+    }
+}
+
+
+/* ============================================
+   DEVELOPER TOOLS (HIDDEN BY DEFAULT)
+============================================ */
+.dev-tools {
+    display:none; /* HIDDEN in final website */
+    background: #ffffff;
+    width: 60%;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.dev-btn {
+    margin: 10px;
+    padding: 10px 20px;
+    background: #4A3AFF;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.dev-select {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+
+
+/* ============================================
+   MIC BUTTON
+============================================ */
+.mic-btn {
+    padding: 12px 25px;
+    background: #4A3AFF;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+/* =============================================
+   NEW ABOUT PAGE — PASTEL ABSTRACT BACKGROUND
+============================================= */
+.about-bg {
+    min-height: 100vh;
+    background: linear-gradient(120deg, #e8f1ff, #e9dbff, #d8e9ff);
+    background-size: 300% 300%;
+    animation: smoothBG 18s ease infinite;
+    padding-top: 90px;
+}
+
+/* Soft Animated Background */
+@keyframes smoothBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* MAIN CONTENT */
+.about-content {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.about-heading {
+    font-size: 42px;
+    font-weight: 800;
+    color: #333;
+}
+
+.about-subtext {
+    margin-top: 8px;
+    font-size: 18px;
+    color: #555;
+}
+
+/* =============================================
+   PANELS ROW
+============================================= */
+.panel-row {
+    margin-top: 50px;
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* =============================================
+   RECTANGULAR FLIP PANELS
+============================================= */
+.panel-card {
+    width: 430px;
+    height: 260px;
+    perspective: 1200px;
+}
+
+.panel-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.9s ease;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.panel-card.flipped .panel-inner {
+    transform: rotateY(180deg);
+}
+
+/* FRONT & BACK COMMON */
+.panel-front,
+.panel-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 22px;
+    padding: 30px;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+/* FRONT STYLES */
+.panel-front {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.4);
+}
+
+.panel-help-front {
+    background: rgba(255, 240, 210, 0.6);
+}
+
+/* BACK STYLES */
+.panel-back {
+    background: #4A3AFF;
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.panel-help-back {
+    background: #E79A40;
+}
+
+/* Panel Text */
+.panel-front h2,
+.panel-back h2 {
+    margin-bottom: 10px;
+}
+.panel-front p {
+    color: #333;
+    opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .panel-card {
+        width: 90%;
+        height: 240px;
+    }
+}

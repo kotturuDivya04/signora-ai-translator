@@ -1,0 +1,50 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signora - Home</title>
+     <link rel="stylesheet" href="/static/styles/style.css">
+</head>
+
+<body class="home-bg">
+
+    <!-- TOP NAVBAR -->
+    <header class="app-header">
+        <div class="logo-container">
+            <img src="/static/assets/logo.png" alt="Signora Logo" class="app-logo">
+            <span class="app-name">Signora</span>
+        </div>
+    </header>
+
+    <!-- HOME SECTION -->
+    <div class="home-container">
+        <h1 class="welcome-title">👋Hello, User! Let's connect.</h1>
+        <p class="choose-text">Choose your mode of communication:</p>
+
+        <!-- HORIZONTAL BUTTON WRAPPER -->
+        <div class="button-row">
+            <!-- TEAL BUTTON -->
+            <button class="mode-btn sign-btn"
+                    onclick="window.location.href='Sign_to_Speech.html'">
+                <span>Sign → Speech Translation</span>
+                <span class="btn-icon">🤟</span>
+            </button>
+
+            <!-- ORANGE BUTTON -->
+            <button class="mode-btn speech-btn"
+                    onclick="window.location.href='Speech_to_Sign.html'">
+                <span>Speech → Sign (avatar)</span>
+                <span class="btn-icon">🗣</span>
+            </button>
+
+            <!-- PURPLE BUTTON -->
+            <button class="mode-btn about-btn"
+                    onclick="window.location.href='About.html'">
+                <span>About & Help</span>
+                <span class="btn-icon">🛡</span>
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>
