@@ -1,79 +1,73 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import joblib
 import numpy as np
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-# ==================================================
+# ==============================
+# PAGE ROUTES (FRONTEND)
+# ==============================
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+@app.route("/sign-to-speech")
+def sign_to_speech():
+    return render_template("sign_to_speech.html")
+
+@app.route("/speech-to-sign")
+def speech_to_sign():
+    return render_template("speech_to_sign.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+# ==============================
 # LOAD TRAINED MODELS
-# ==================================================
-print("Loading models...")
+# ==============================
 
-model_1hand = joblib.load("model.pkl")              # static 1 hand
-model_2hand = joblib.load("static_2hand_rf.pkl")   # static 2 hand
-motion_model = joblib.load("motion_1hand.pkl")    # motion 1 hand
+model_1hand = joblib.load("model.pkl")
+model_2hand = joblib.load("static_2hand_rf.pkl")
+motion_model = joblib.load("motion_1hand.pkl")
 
-print("All models loaded successfully ✅")
+# ==============================
+# API ENDPOINT
+# ==============================
 
-# ==================================================
-# PREDICTION ENDPOINT
-# ==================================================
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.json
-
         landmarks = data.get("landmarks")
-        hand_count = int(data.get("handCount",0))
-        is_motion = bool(data.get("isMotion",False))   # true / false from frontend
+        hand_count = int(data.get("handCount", 0))
+        is_motion = bool(data.get("isMotion", False))
 
-        if landmarks is None or hand_count is None:
-            return jsonify({
-                "prediction": None,
-                "confidence": 0.0
-            })
+        if not landmarks:
+            return jsonify({"prediction": None, "confidence": 0.0})
 
         arr = np.array(landmarks).reshape(1, -1)
 
-        # ==================================================
-        # MODEL SELECTION LOGIC
-        # ==================================================
         if hand_count == 1 and is_motion:
-            print("🔥 USING MOTION MODEL")
             model = motion_model
         elif hand_count == 1:
-            print("🟢 USING STATIC 1 HAND MODEL")
             model = model_1hand
         elif hand_count == 2:
-            print("🔵 USING STATIC 2 HAND MODEL")
             model = model_2hand
         else:
-            return jsonify({
-                "prediction": None,
-                "confidence": 0.0
-            })
+            return jsonify({"prediction": None, "confidence": 0.0})
 
-        # ==================================================
-        # SAFETY CHECK FOR FEATURE SIZE
-        # ==================================================
-        expected_features = model.n_features_in_
-
-        if arr.shape[1] != expected_features:
-            print("❌ FEATURE SIZE MISMATCH")
-            print("Got:", arr.shape[1], "Expected:", expected_features)
-            return jsonify({
-                "prediction": None,
-                "confidence": 0.0
-            })
-
-        # ==================================================
-        # PREDICTION
-        # ==================================================
         probs = model.predict_proba(arr)[0]
-        confidence = float(np.max(probs))
         prediction = model.classes_[np.argmax(probs)]
+        confidence = float(np.max(probs))
 
         return jsonify({
             "prediction": str(prediction),
@@ -81,14 +75,13 @@ def predict():
         })
 
     except Exception as e:
-        print("Error:", e)
-        return jsonify({
-            "prediction": None,
-            "confidence": 0.0
-        })
+        print(e)
+        return jsonify({"prediction": None, "confidence": 0.0})
 
-# ==================================================
-# START SERVER
-# ==================================================
+# ==============================
+# START SERVER (RENDER)
+# ==============================
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
