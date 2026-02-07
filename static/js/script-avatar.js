@@ -299,6 +299,7 @@ window.signWord = (input) => {
     playSentence(words);
 };
 
+
 /* ------------------ RENDER LOOP ------------------ */
 function animate() {
     requestAnimationFrame(animate);

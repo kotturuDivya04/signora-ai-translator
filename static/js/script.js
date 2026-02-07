@@ -384,7 +384,11 @@ if (predictionLocked) return;
     const data = await res.json();
     if (!data.prediction) return;
 
-    predictionText.innerText = data.prediction;
+  if (!handRemovedTime) {
+  predictionText.innerText = data.prediction;
+}
+
+
 
     if (data.prediction !== lastPredictedSign) {
       currentWord += data.prediction;
@@ -698,11 +702,24 @@ setInterval(() => {
       }
     }
 
-    // 👀 Show final output
-    predictionText.innerText = finalOutput;
+    // 1️⃣ Show English first
+predictionText.innerText = inferredSentence;
 
-    // 🔊 Speak ONCE
-    speakPrediction(finalOutput);
+// 2️⃣ Replace with selected language
+setTimeout(() => {
+  const translated =
+    selectedLanguage === "en"
+      ? inferredSentence
+      : (inferredSentence !== rawSentence
+          ? translateSentence(inferredSentence)
+          : inferredSentence
+              .split(" ")
+              .map(w => translateWord(w))
+              .join(" "));
+
+  predictionText.innerText = translated;
+  speakPrediction(translated);
+}, 150);
 
     // 🔁 Reset
     sentenceBuffer = "";
