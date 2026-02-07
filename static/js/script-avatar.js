@@ -260,21 +260,33 @@ const SIGN_MAP = {
   seri: "/static/assets/Animations/ok.glb"
 };
 function playSentence(words, index = 0) {
-    if (index >= words.length) return resetToIdle();
+    if (index >= words.length) {
+        setTimeout(resetToIdle, 300);
+        return;
+    }
 
     const file = SIGN_MAP[words[index]];
     if (!file) return playSentence(words, index + 1);
 
-    loader.load(file, (gltf) => {
-        if (!gltf.animations || !gltf.animations.length) {
-            console.warn("⚠ No animation in", file);
-            return playSentence(words, index + 1);
-        }
+   loader.load(file, (gltf) => {
+    const clip = gltf.animations[0];
+    if (!clip) {
+        console.warn("⚠ No animation in", file);
+        return playSentence(words, index + 1);
+    }
 
-        playClip(gltf.animations[0], () => {
-            playSentence(words, index + 1);
-        });
-    });
+    const action = mixer.clipAction(clip);
+    action.reset();
+    action.setLoop(THREE.LoopOnce);
+    action.clampWhenFinished = true;
+    action.play();
+
+    setTimeout(() => {
+        action.stop();
+        playSentence(words, index + 1);
+    }, clip.duration * 1000);
+});
+
 }
 
 
