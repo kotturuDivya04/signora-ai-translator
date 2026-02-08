@@ -1,5 +1,5 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js";
-import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 /* =========================================================
    SIGNORA – SPEECH TO SIGN AVATAR RENDERER
@@ -260,36 +260,20 @@ const SIGN_MAP = {
   seri: "/static/assets/Animations/ok.glb"
 };
 function playSentence(words, index = 0) {
-    if (index >= words.length) {
-        resetToIdle();
-        return;
-    }
+    if (index >= words.length) return resetToIdle();
 
     const file = SIGN_MAP[words[index]];
-    if (!file) {
-        playSentence(words, index + 1);
-        return;
-    }
+    if (!file) return playSentence(words, index + 1);
 
     loader.load(file, (gltf) => {
-        const clip = gltf.animations[0];
-        if (!clip) {
+        if (!gltf.animations || !gltf.animations.length) {
             console.warn("⚠ No animation in", file);
-            playSentence(words, index + 1);
-            return;
+            return playSentence(words, index + 1);
         }
 
-        // ❗ Apply animation to BASE AVATAR
-        const action = mixer.clipAction(clip, avatar);
-        action.reset();
-        action.setLoop(THREE.LoopOnce);
-        action.clampWhenFinished = true;
-        action.play();
-
-        setTimeout(() => {
-            action.stop();
+        playClip(gltf.animations[0], () => {
             playSentence(words, index + 1);
-        }, clip.duration * 1000);
+        });
     });
 }
 
@@ -319,14 +303,10 @@ window.signWord = (input) => {
 /* ------------------ RENDER LOOP ------------------ */
 function animate() {
     requestAnimationFrame(animate);
-    const delta = clock.getDelta();
-
-    if (mixer) mixer.update(delta);
-
+    mixer?.update(clock.getDelta());
     updatePose();
     renderer.render(scene, camera);
 }
-
 
 /* ------------------ RESIZE ------------------ */
 function onResize() {
