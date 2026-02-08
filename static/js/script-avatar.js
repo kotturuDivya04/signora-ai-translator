@@ -2,24 +2,17 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 /* =========================================================
-   SIGNORA – SPEECH TO SIGN AVATAR RENDERER
-   (SEPARATE GLBs – BASE AVATAR IDLE ONLY)
+   SIGNORA – SPEECH TO SIGN AVATAR (FINAL STABLE VERSION)
    ========================================================= */
 
 (() => {
 
-console.log("script-avatar.js loaded");
+console.log("✅ script-avatar.js loaded");
 
 /* ------------------ VARIABLES ------------------ */
 let scene, camera, renderer, loader, clock;
-
-// Base idle avatar
-let idleAvatar = null;
-let idleMixer = null;
-
-// Active sign model
-let activeModel = null;
-let activeMixer = null;
+let avatar, mixer;
+let isPlaying = false;
 
 /* ------------------ INIT ------------------ */
 function init() {
@@ -47,103 +40,80 @@ function init() {
     container.appendChild(renderer.domElement);
 
     scene.add(new THREE.AmbientLight(0xffffff, 1.4));
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    dirLight.position.set(3, 10, 10);
-    scene.add(dirLight);
+    const light = new THREE.DirectionalLight(0xffffff, 1.2);
+    light.position.set(3, 10, 10);
+    scene.add(light);
 
     clock = new THREE.Clock();
     loader = new GLTFLoader();
 
-    loadIdleAvatar();
+    loadAvatar();
     window.addEventListener("resize", onResize);
 }
 
-/* ------------------ LOAD BASE IDLE AVATAR ------------------ */
-function loadIdleAvatar() {
+/* ------------------ LOAD BASE AVATAR ------------------ */
+function loadAvatar() {
     loader.load("/static/assets/avatar/myavatar.glb", (gltf) => {
-        idleAvatar = gltf.scene;
+        avatar = gltf.scene;
 
-        idleAvatar.position.set(0, -0.1, 0);
-        idleAvatar.scale.set(1.2, 1.2, 1.2);
+        avatar.position.set(0, -0.1, 0);
+        avatar.scale.set(1.2, 1.2, 1.2);
 
-        idleMixer = new THREE.AnimationMixer(idleAvatar);
-        scene.add(idleAvatar);
+        mixer = new THREE.AnimationMixer(avatar);
+        scene.add(avatar);
 
         document.getElementById("loading-text")?.remove();
         animate();
     });
 }
 
-/* ------------------ SIGN MAP (UNCHANGED) ------------------ */
+/* ------------------ SIGN MAP (ALL LANGUAGES) ------------------ */
 const SIGN_MAP = {
+
+  // Greetings
   hello: "/static/assets/Animations/hello.glb",
   hi: "/static/assets/Animations/hello.glb",
-  food: "/static/assets/Animations/eat.glb",
-  eating: "/static/assets/Animations/eat.glb",
-
   namaste: "/static/assets/Animations/hello.glb",
   namaskar: "/static/assets/Animations/hello.glb",
   namaskaram: "/static/assets/Animations/hello.glb",
   vanakkam: "/static/assets/Animations/hello.glb",
 
+  // Pronouns
   i: "/static/assets/Animations/I.glb",
   me: "/static/assets/Animations/me.glb",
   you: "/static/assets/Animations/you.glb",
-
   main: "/static/assets/Animations/I.glb",
   mujhe: "/static/assets/Animations/me.glb",
-  mujhey: "/static/assets/Animations/me.glb",
   tum: "/static/assets/Animations/you.glb",
   aap: "/static/assets/Animations/you.glb",
-
   nenu: "/static/assets/Animations/I.glb",
   naaku: "/static/assets/Animations/me.glb",
-  naku: "/static/assets/Animations/me.glb",
   nuvvu: "/static/assets/Animations/you.glb",
-  meeru: "/static/assets/Animations/you.glb",
-
   naan: "/static/assets/Animations/I.glb",
   ennai: "/static/assets/Animations/me.glb",
-  enakku: "/static/assets/Animations/me.glb",
   nee: "/static/assets/Animations/you.glb",
-  neenga: "/static/assets/Animations/you.glb",
 
+  // Actions
+  help: "/static/assets/Animations/help.glb",
+  madad: "/static/assets/Animations/help.glb",
+  sahayam: "/static/assets/Animations/help.glb",
+  udhavi: "/static/assets/Animations/help.glb",
+
+  eat: "/static/assets/Animations/eat.glb",
+  food: "/static/assets/Animations/eat.glb",
+  eating: "/static/assets/Animations/eat.glb",
+  khana: "/static/assets/Animations/eat.glb",
+  tinu: "/static/assets/Animations/eat.glb",
+  saapidu: "/static/assets/Animations/eat.glb",
+
+  // Polite
   please: "/static/assets/Animations/please.glb",
   sorry: "/static/assets/Animations/sorry.glb",
   thank: "/static/assets/Animations/thankyou.glb",
   thanks: "/static/assets/Animations/thankyou.glb",
   welcome: "/static/assets/Animations/welcome.glb",
 
-  kripya: "/static/assets/Animations/please.glb",
-  maaf: "/static/assets/Animations/sorry.glb",
-  shukriya: "/static/assets/Animations/thankyou.glb",
-  dhanyavaad: "/static/assets/Animations/thankyou.glb",
-  swagat: "/static/assets/Animations/welcome.glb",
-
-  daya: "/static/assets/Animations/please.glb",
-  kshaminchandi: "/static/assets/Animations/sorry.glb",
-  dhanyavadalu: "/static/assets/Animations/thankyou.glb",
-  swagatham: "/static/assets/Animations/welcome.glb",
-
-  thayavu: "/static/assets/Animations/please.glb",
-  mannikkavum: "/static/assets/Animations/sorry.glb",
-  nandri: "/static/assets/Animations/thankyou.glb",
-  varaverppu: "/static/assets/Animations/welcome.glb",
-
-  help: "/static/assets/Animations/help.glb",
-  eat: "/static/assets/Animations/eat.glb",
-
-  madad: "/static/assets/Animations/help.glb",
-  khana: "/static/assets/Animations/eat.glb",
-
-  sahayam: "/static/assets/Animations/help.glb",
-  tinu: "/static/assets/Animations/eat.glb",
-  tinnava: "/static/assets/Animations/eat.glb",
-
-  udhavi: "/static/assets/Animations/help.glb",
-  saapidu: "/static/assets/Animations/eat.glb",
-
+  // Questions
   what: "/static/assets/Animations/what.glb",
   how: "/static/assets/Animations/how.glb",
   name: "/static/assets/Animations/name.glb",
@@ -154,65 +124,42 @@ const SIGN_MAP = {
   kaise: "/static/assets/Animations/how.glb",
   naam: "/static/assets/Animations/name.glb",
   haan: "/static/assets/Animations/yes.glb",
-  theek: "/static/assets/Animations/ok.glb",
 
   emi: "/static/assets/Animations/what.glb",
   ela: "/static/assets/Animations/how.glb",
   peru: "/static/assets/Animations/name.glb",
-  avunu: "/static/assets/Animations/yes.glb",
-  sare: "/static/assets/Animations/ok.glb",
 
   enna: "/static/assets/Animations/what.glb",
   eppadi: "/static/assets/Animations/how.glb",
-  peyar: "/static/assets/Animations/name.glb",
-  aam: "/static/assets/Animations/yes.glb",
-  seri: "/static/assets/Animations/ok.glb"
+  peyar: "/static/assets/Animations/name.glb"
 };
 
-/* ------------------ PLAY SENTENCE (SEQUENTIAL GLBs) ------------------ */
+/* ------------------ PLAY WORDS SEQUENTIALLY ------------------ */
 function playSentence(words, index = 0) {
     if (index >= words.length) {
-        if (activeModel) {
-            scene.remove(activeModel);
-            activeModel = null;
-            activeMixer = null;
-        }
-        scene.add(idleAvatar);
+        isPlaying = false;
         return;
     }
 
     const file = SIGN_MAP[words[index]];
-    if (!file) {
-        playSentence(words, index + 1);
-        return;
-    }
-
-    scene.remove(idleAvatar);
+    if (!file) return playSentence(words, index + 1);
 
     loader.load(file, (gltf) => {
-        activeModel = gltf.scene;
-        activeModel.position.set(0, -0.1, 0);
-        activeModel.scale.set(1.2, 1.2, 1.2);
-
-        activeMixer = new THREE.AnimationMixer(activeModel);
-        scene.add(activeModel);
-
-        const clip = gltf.animations[0];
-        if (!clip) {
-            scene.remove(activeModel);
-            playSentence(words, index + 1);
-            return;
+        if (!gltf.animations.length) {
+            return playSentence(words, index + 1);
         }
 
-        const action = activeMixer.clipAction(clip);
+        isPlaying = true;
+        const clip = gltf.animations[0];
+        const action = mixer.clipAction(clip, avatar);
+
+        action.reset();
         action.setLoop(THREE.LoopOnce);
         action.clampWhenFinished = true;
         action.play();
 
         setTimeout(() => {
-            scene.remove(activeModel);
-            activeModel = null;
-            activeMixer = null;
+            action.stop();
             playSentence(words, index + 1);
         }, clip.duration * 1000);
     });
@@ -220,7 +167,7 @@ function playSentence(words, index = 0) {
 
 /* ------------------ SPEECH → SIGN ------------------ */
 window.signWord = (input) => {
-    if (!idleAvatar) return;
+    if (!avatar || !mixer || isPlaying) return;
 
     const words = input
         .toLowerCase()
@@ -229,18 +176,13 @@ window.signWord = (input) => {
         .filter(w => SIGN_MAP[w]);
 
     if (!words.length) return;
-
     playSentence(words);
 };
 
 /* ------------------ RENDER LOOP ------------------ */
 function animate() {
     requestAnimationFrame(animate);
-    const delta = clock.getDelta();
-
-    if (activeMixer) activeMixer.update(delta);
-    else if (idleMixer) idleMixer.update(delta);
-
+    mixer.update(clock.getDelta());
     renderer.render(scene, camera);
 }
 
@@ -248,7 +190,6 @@ function animate() {
 function onResize() {
     const box = document.getElementById("avatarBox");
     if (!box) return;
-
     camera.aspect = box.clientWidth / box.clientHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(box.clientWidth, box.clientHeight);
