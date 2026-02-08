@@ -1,5 +1,5 @@
-import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js";
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/loaders/GLTFLoader.js";
 
 /* =========================================================
    SIGNORA – SPEECH TO SIGN AVATAR RENDERER
@@ -261,32 +261,36 @@ const SIGN_MAP = {
 };
 function playSentence(words, index = 0) {
     if (index >= words.length) {
-        setTimeout(resetToIdle, 300);
+        resetToIdle();
         return;
     }
 
     const file = SIGN_MAP[words[index]];
-    if (!file) return playSentence(words, index + 1);
-
-   loader.load(file, (gltf) => {
-    const clip = gltf.animations[0];
-    if (!clip) {
-        console.warn("⚠ No animation in", file);
-        return playSentence(words, index + 1);
+    if (!file) {
+        playSentence(words, index + 1);
+        return;
     }
 
-    const action = mixer.clipAction(clip);
-    action.reset();
-    action.setLoop(THREE.LoopOnce);
-    action.clampWhenFinished = true;
-    action.play();
+    loader.load(file, (gltf) => {
+        const clip = gltf.animations[0];
+        if (!clip) {
+            console.warn("⚠ No animation in", file);
+            playSentence(words, index + 1);
+            return;
+        }
 
-    setTimeout(() => {
-        action.stop();
-        playSentence(words, index + 1);
-    }, clip.duration * 1000);
-});
+        // ❗ Apply animation to BASE AVATAR
+        const action = mixer.clipAction(clip, avatar);
+        action.reset();
+        action.setLoop(THREE.LoopOnce);
+        action.clampWhenFinished = true;
+        action.play();
 
+        setTimeout(() => {
+            action.stop();
+            playSentence(words, index + 1);
+        }, clip.duration * 1000);
+    });
 }
 
 
@@ -315,10 +319,14 @@ window.signWord = (input) => {
 /* ------------------ RENDER LOOP ------------------ */
 function animate() {
     requestAnimationFrame(animate);
-    mixer?.update(clock.getDelta());
+    const delta = clock.getDelta();
+
+    if (mixer) mixer.update(delta);
+
     updatePose();
     renderer.render(scene, camera);
 }
+
 
 /* ------------------ RESIZE ------------------ */
 function onResize() {
