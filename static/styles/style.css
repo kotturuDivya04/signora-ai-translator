@@ -8,6 +8,14 @@
     font-family: "Poppins", sans-serif;
 }
 
+html {
+    font-size: 16px;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
 
 
 /* ============================================
@@ -29,7 +37,8 @@
    LOGIN PAGE BACKGROUND (GRADIENT WITH ANIMATION)
 ============================================ */
 .login-bg {
-    height: 100vh;
+    min-height: 100svh;  /* modern mobile-safe */
+    height: auto;
     background: linear-gradient(-45deg, #9780b9, #8d95e6, #cad7ee, #ae7de6);
     background-size: 400% 400%;
     animation: seaBreeze 15s ease infinite;
@@ -74,6 +83,7 @@
 
 .login-box {
     width: 350px;
+    max-width: 92%;
     padding: 25px;
     border-radius: 20px;
     background: rgba(255,255,255,0.15);
@@ -85,7 +95,7 @@
 }
 
 .input-box {
-    width: 90%;
+     width: 100%;
     padding: 12px;
     border-radius: 10px;
     border: none;
@@ -173,9 +183,9 @@
     background: linear-gradient(-45deg, #78b6f5, #65a3ee, #c3a7f0, #7737dd);
     background-size: 400% 400%;
     animation: seaBreeze 15s ease infinite;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* ============================================
@@ -236,7 +246,7 @@
    HOME PAGE CARDS
 ============================================ */
 .home-container {
-    height: calc(100vh - 70px); /* exclude navbar height */
+    min-height: calc(100vh - 70px); /* allows scrolling */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -244,7 +254,8 @@
     align-items: center;      /* horizontal centering */
     text-align: center;
     color: white;
-    padding: 40px 0;          /* equal top and bottom spacing */
+    padding-top: 70px;   /* 🔥 pushes content below navbar */
+    padding-bottom: 40px;     
 
 }
 
@@ -279,7 +290,9 @@
 ============================================ */
 .mode-btn {
     width: 420px;
+    max-width: 90%;   
     height: 130px;
+    min-height: 110px; 
     padding: 25px 40px;
     border-radius: 25px;
     font-size: 20px;
@@ -295,6 +308,7 @@
 
     transition: 0.3s ease;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; 
 }
 
 /* TEAL BUTTON */
@@ -339,39 +353,6 @@
 }
 
 /* ============================================
-   RESPONSIVE LAYOUT
-============================================ */
-@media (max-width: 1200px) {
-    .button-row {
-        flex-wrap: wrap;
-        gap: 30px;
-    }
-    .mode-btn {
-        width: 90%;
-    }
-}
-
-@media (max-width: 600px) {
-    .welcome-title {
-        font-size: 30px;
-    }
-    .choose-text {
-        font-size: 16px;
-        margin-bottom: 30px;
-    }
-    .mode-btn {
-        width: 85%;
-        height: 110px;
-        font-size: 18px;
-    }
-    .btn-icon {
-        font-size: 28px;
-    }
-}
-
-
-
-/* ============================================
    CAMERA + AVATAR PAGES
 ============================================ */
 /* =============================================
@@ -405,7 +386,9 @@
 
 .camera-box {
     width: 70%;
+    max-width: 95%;         
     height: 500px;
+    aspect-ratio: 16 / 9;   
     margin: 20px auto;
     background: white;
     border-radius: 18px;
@@ -415,30 +398,34 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
+    box-sizing: border-box;
 }
 
 .avatar-box{
     width: 70%;
+    max-width: 95%;  
     height: 500px;
+    aspect-ratio: 16 / 9;
     margin: 20px auto;
     background: white;
-    border-radius: 18px;
     border-radius: 15px;
     box-shadow: 0 2px 10px rgba(125,160,202,0.25);
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 
 }
 /* Clean Speech Output Box */
 .speech-box {
     margin: 20px auto;
     width: 60%;
+    max-width: 95%;
     background: white;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
     
 }
 
@@ -479,6 +466,7 @@
 ============================================ */
 .prediction-box {
     width: 60%;
+     max-width: 95%; 
     padding: 30px 40px;
     margin: 40px auto;
     background: #ffffff;
@@ -493,6 +481,7 @@
 
     /* remove the ugly push */
     padding-right: 0 !important;
+    box-sizing: border-box;
 }
 
 .prediction-box h2 {
@@ -533,17 +522,7 @@
 }
 
 
-/* RESPONSIVE OPTIMIZATION */
-@media (max-width: 768px) {
-    .prediction-box {
-        width: 90%;
-        padding: 25px;
-    }
 
-    .prediction-box h2 {
-        font-size: 22px;
-    }
-}
 
 
 /* ============================================
@@ -599,14 +578,6 @@
     animation: smoothBG 18s ease infinite;
     padding-top: 90px;
 }
-
-/* Soft Animated Background */
-@keyframes smoothBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 /* MAIN CONTENT */
 .about-content {
     text-align: center;
@@ -705,9 +676,249 @@
 }
 
 /* Responsive */
+/* =====================================================
+   FINAL MOBILE FIXES — ADD AT VERY BOTTOM (<= 600px)
+===================================================== */
 @media (max-width: 600px) {
+
+    /* ---------- GLOBAL SAFETY ---------- */
+    body {
+        overflow-x: hidden;
+        
+    }
+
+    img, video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* ---------- LOGIN PAGE ---------- */
+    .login-bg {
+        min-height: 100svh;   /* mobile-safe viewport */
+        height: auto;
+        padding: 20px;
+    }
+
+    .login-container {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .login-box {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .input-box {
+        width: 100%;
+        font-size: 16px; /* prevents iOS zoom */
+    }
+
+    .login-btn {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .app-title {
+        font-size: 28px;
+    }
+
+    .tagline {
+        font-size: 14px;
+    }
+
+    /* ---------- NAVBAR CONTENT SAFETY ---------- */
+    .home-container,
+    .page-container,
+    .about-content {
+        padding-top: 80px;
+    }
+
+    /* ---------- HOME PAGE ---------- */
+    .home-container {
+        padding: 20px;
+    }
+
+    .button-row {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    /* ---------- MODE BUTTONS ---------- */
+    .mode-btn {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        padding: 18px 20px;
+        font-size: 17px;
+        gap: 10px;
+        border-radius: 18px;
+    }
+
+    .btn-icon {
+        font-size: 26px;
+    }
+
+    /* ---------- CAMERA & AVATAR ---------- */
+    .camera-box,
+    .avatar-box {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        margin: 15px auto;
+        border-radius: 14px;
+    }
+
+    .camera-box canvas {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+    }
+
+    /* ---------- SPEECH BOX ---------- */
+    .speech-box {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    /* ---------- PREDICTION BOX ---------- */
+    .prediction-box {
+        width: 100%;
+        max-width: 100%;
+        padding: 22px 18px;
+        margin: 25px auto;
+    }
+
+    .prediction-box h2 {
+        font-size: 22px;
+    }
+
+    /* ---------- PANELS ---------- */
     .panel-card {
         width: 90%;
         height: 240px;
+    }
+}
+/* =====================================================
+   FINAL TABLET FIXES — ADD BELOW MOBILE BLOCK (601px–1024px)
+===================================================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    /* ---------- GLOBAL SAFETY ---------- */
+    body {
+        overflow-x: hidden;
+    }
+
+    img, video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* ---------- LOGIN PAGE ---------- */
+    .login-bg {
+        min-height: 100vh;
+        padding: 30px;
+    }
+
+    .login-container {
+        width: 100%;
+    }
+
+    .login-box {
+        width: 80%;
+        max-width: 420px;
+        padding: 25px;
+    }
+
+    .input-box {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .login-btn {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .app-title {
+        font-size: 34px;
+    }
+
+    .tagline {
+        font-size: 16px;
+    }
+
+    /* ---------- NAVBAR CONTENT SAFETY ---------- */
+    .home-container,
+    .page-container,
+    .about-content {
+        padding-top: 90px;
+    }
+
+    /* ---------- HOME PAGE ---------- */
+    .home-container {
+        padding: 30px;
+    }
+
+    .button-row {
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    /* ---------- MODE BUTTONS ---------- */
+    .mode-btn {
+        width: 80%;
+        max-width: 80%;
+        height: auto;
+        padding: 22px 30px;
+        font-size: 18px;
+        border-radius: 22px;
+    }
+
+    .btn-icon {
+        font-size: 30px;
+    }
+
+    /* ---------- CAMERA & AVATAR ---------- */
+    .camera-box,
+    .avatar-box {
+        width: 85%;
+        max-width: 85%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        margin: 20px auto;
+        border-radius: 18px;
+    }
+
+    .camera-box canvas {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+    }
+
+    /* ---------- SPEECH & PREDICTION ---------- */
+    .speech-box,
+    .prediction-box {
+        width: 80%;
+        max-width: 80%;
+    }
+
+    .prediction-box {
+        padding: 28px;
+        margin: 35px auto;
+    }
+
+    .prediction-box h2 {
+        font-size: 24px;
+    }
+
+    /* ---------- PANELS ---------- */
+    .panel-card {
+        width: 80%;
+        height: 260px;
     }
 }
