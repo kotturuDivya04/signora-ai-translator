@@ -529,7 +529,7 @@ body {
    DEVELOPER TOOLS (HIDDEN BY DEFAULT)
 ============================================ */
 .dev-tools {
-    display:none; /* HIDDEN in final website */
+    display:0; /* HIDDEN in final website */
     background: #ffffff;
     width: 60%;
     margin: 20px auto;
