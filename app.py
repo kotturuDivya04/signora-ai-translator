@@ -36,13 +36,12 @@ def about():
 # ==============================
 
 model_1hand = joblib.load("model.pkl")
-model_2hand = joblib.load("static_2hand_rf.pkl")
+#model_2hand = joblib.load("static_2hand_rf.pkl")
 motion_model = joblib.load("motion_1hand.pkl")
 
 # ==============================
 # API ENDPOINT
 # ==============================
-
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -53,17 +52,23 @@ def predict():
 
         if not landmarks:
             return jsonify({"prediction": None, "confidence": 0.0})
+        print("Incoming feature length:", len(landmarks))
+
 
         arr = np.array(landmarks).reshape(1, -1)
 
+        # 🔥 Only 1-hand models supported
         if hand_count == 1 and is_motion:
             model = motion_model
         elif hand_count == 1:
             model = model_1hand
-        elif hand_count == 2:
-            model = model_2hand
         else:
-            return jsonify({"prediction": None, "confidence": 0.0})
+            # 2-hand not supported
+            return jsonify({
+                "prediction": None,
+                "confidence": 0.0,
+                "message": "Only 1-hand model supported"
+            })
 
         probs = model.predict_proba(arr)[0]
         prediction = model.classes_[np.argmax(probs)]
@@ -75,7 +80,7 @@ def predict():
         })
 
     except Exception as e:
-        print(e)
+        print("Prediction error:", e)
         return jsonify({"prediction": None, "confidence": 0.0})
 
 # ==============================

@@ -9,7 +9,7 @@ import joblib
 import os
 
 # --- 1. CONFIGURATION ---
-CSV_FILE = 'dataset4.csv'     # ✔️ Correct CSV name
+CSV_FILE = 'static_dataset_1hands.csv'     # ✔️ Correct CSV name
 MODEL_FILE = 'model.pkl'      # Output model
 
 # --- 2. LOAD DATA ---
