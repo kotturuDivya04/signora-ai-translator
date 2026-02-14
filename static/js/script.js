@@ -523,6 +523,9 @@ const SENTENCE_TRANSLATIONS = {
     te: "మీరు వెళ్లాలనుకుంటున్నారా?",
     ta: "நீங்கள் போக விரும்புகிறீர்களா?"
   }
+ 
+
+
 };
 // ===========================================================
 // 🌐 WORD TRANSLATIONS (STATIC + MOTION)
@@ -619,8 +622,8 @@ function inferSentence(rawSentence) {
   if (text.includes("HOPE") && hasYou) return "Hope you are okay?";
 
   if (text.includes("NAME")) {
-    if (hasI || text.includes("ME")) return "My name is";
-    return "What is your name?";
+    if (hasYou) return "What is your name?" ;
+    return "MY Name Is";
   }
 
   if (text.includes("WATER")) {
