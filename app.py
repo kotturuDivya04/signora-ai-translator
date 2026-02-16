@@ -32,44 +32,46 @@ def about():
     return render_template("about.html")
 
 # ==============================
-# LOAD TRAINED MODELS
+# LOAD TRAINED MODEL
 # ==============================
 
+# Static 1-hand sign model
 model_1hand = joblib.load("model.pkl")
-#model_2hand = joblib.load("static_2hand_rf.pkl")
-motion_model = joblib.load("motion_1hand.pkl")
 
 # ==============================
 # API ENDPOINT
 # ==============================
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.json
         landmarks = data.get("landmarks")
         hand_count = int(data.get("handCount", 0))
-        is_motion = bool(data.get("isMotion", False))
 
+        # If no landmarks detected
         if not landmarks:
-            return jsonify({"prediction": None, "confidence": 0.0})
+            return jsonify({
+                "prediction": None,
+                "confidence": 0.0
+            })
+
         print("Incoming feature length:", len(landmarks))
 
-
+        # Convert to numpy format for model
         arr = np.array(landmarks).reshape(1, -1)
 
-        # 🔥 Only 1-hand models supported
-        if hand_count == 1 and is_motion:
-            model = motion_model
-        elif hand_count == 1:
+        # Only 1-hand model supported
+        if hand_count == 1:
             model = model_1hand
         else:
-            # 2-hand not supported
             return jsonify({
                 "prediction": None,
                 "confidence": 0.0,
                 "message": "Only 1-hand model supported"
             })
 
+        # Predict
         probs = model.predict_proba(arr)[0]
         prediction = model.classes_[np.argmax(probs)]
         confidence = float(np.max(probs))
@@ -81,7 +83,10 @@ def predict():
 
     except Exception as e:
         print("Prediction error:", e)
-        return jsonify({"prediction": None, "confidence": 0.0})
+        return jsonify({
+            "prediction": None,
+            "confidence": 0.0
+        })
 
 # ==============================
 # START SERVER (RENDER)

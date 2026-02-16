@@ -18,9 +18,9 @@ let handCountStableSince = 0;
 
 // ================= THRESHOLDS =================
 const HAND_STABILITY_TIME = 300;
-const STATIC_MOTION_THRESHOLD = 0.05;
+const STATIC_MOTION_THRESHOLD = 0.08;
 const STATIC_TIME_REQUIRED = 500;
-const SPEAK_DELAY = 1500;
+const SPEAK_DELAY = 1000;
 
 // ================= HTML =================
 const videoElement = document.getElementById("camera");
@@ -149,7 +149,10 @@ function onResults(results) {
   } else {
     // ---- HAND REMOVED → FINALIZE WORD ----
    if (handWasPresent && currentWord.length > 0) {
+ // sentenceBuffer += currentWord + " ";
+ if (!sentenceBuffer.endsWith(currentWord + " ")) {
   sentenceBuffer += currentWord + " ";
+}
   currentWord = "";
 
   handRemovedTime = Date.now();
@@ -201,6 +204,7 @@ setInterval(async () => {
   // ---------------- BASIC SAFETY ----------------
   if (isCollecting || suppressPredictionUI) return;
   if (!latestLandmarks) return;
+  if (predictionLocked) return;   // 🔥 ADD
 
   const flat = [];
   latestLandmarks.forEach(pt => flat.push(pt.x));
@@ -325,7 +329,7 @@ if (motion > STATIC_MOTION_THRESHOLD) {
 }
 
 // 🔥 Switch to MOTION MODE only after 2 strong frames
-if (motionStartCounter >= 2) {
+/*if (motionStartCounter >= 2) {
   mode = "MOTION";
   suppressStatic = true;
 
@@ -347,10 +351,11 @@ if (motionStartCounter >= 2) {
 
   return;
 }
+*/
 
 
 // ---------------- STATIC PREDICTION ----------------
-if (mode === "MOTION") return;
+//if (mode === "MOTION") return;
 if (suppressStatic) return;
 
 // 🔑 Strong filter: require continuous stillness
@@ -364,8 +369,12 @@ if (motion < STATIC_MOTION_THRESHOLD) {
 }
 
 // 🔑 Require at least 5 continuous still frames (~1 sec at 200ms)
-if (stillFrameCounter < 3) return;
-
+if (stillFrameCounter < 5) {
+ if (predictionText.innerText !== "Hold steady...") {
+  predictionText.innerText = "Hold steady...";
+}
+  return;
+}
 if (!handStaticSince) handStaticSince = Date.now();
 if (Date.now() - handStaticSince < STATIC_TIME_REQUIRED) return;
 if (predictionLocked) return;
@@ -377,7 +386,7 @@ if (predictionLocked) return;
       body: JSON.stringify({
         landmarks: flat,
         handCount: handCount,
-        isMotion: false
+        //isMotion: false
       })
     });
 
@@ -399,7 +408,7 @@ if (predictionLocked) return;
 
     setTimeout(() => {
       predictionLocked = false;
-    }, 400);
+    }, 700);
 
     handStaticSince = 0;
 
@@ -417,7 +426,10 @@ function pushMotionWord(word) {
 predictionText.innerText = word;
 
 // 🧠 English buffer
-sentenceBuffer += word + " ";
+//sentenceBuffer += word + " ";
+if (!sentenceBuffer.endsWith(word + " ")) {
+  sentenceBuffer += word + " ";
+}
 handRemovedTime = Date.now();
 sentenceSpoken = false;
 lastPredictedSign = null;
@@ -739,6 +751,8 @@ setTimeout(() => {
 // ===========================================================
 function speakPrediction(text) {
   if (!text) return;
+  speechSynthesis.cancel();   // 🔥 ADD THIS
+
 
   const u = new SpeechSynthesisUtterance(text);
 
