@@ -623,7 +623,7 @@ function inferSentence(rawSentence) {
 
   if (text.includes("NAME")) {
     if (hasYou) return "What is your name?" ;
-    return "My Name Is";
+    if(hasI) return "My Name Is";
   }
 
   if (text.includes("WATER")) {
