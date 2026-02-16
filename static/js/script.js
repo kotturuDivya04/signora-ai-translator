@@ -540,7 +540,7 @@ const WORD_TRANSLATIONS = {
   "WAIT": { hi: "रुको", te: "ఆగండి", ta: "காத்திரு" },
   "STOP": { hi: "रुको", te: "ఆపు", ta: "நిల్లు" },
   "YES": { hi: "हाँ", te: "అవును", ta: "ஆம்" },
-  "NO": { hi: "नहीं", te: "కాదు", ta: "இல்லை" },
+  
 
   // 🔹 Added missing words
   "WANT": { hi: "चाहिए", te: "కావాలి", ta: "வேண்டும்" },
