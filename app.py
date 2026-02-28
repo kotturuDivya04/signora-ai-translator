@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect
 import joblib
 import numpy as np
 from flask_cors import CORS
@@ -7,71 +7,80 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+# 🔥 DISABLE TEMPLATE CACHING (VERY IMPORTANT)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+
 # ==============================
 # PAGE ROUTES (FRONTEND)
 # ==============================
 
-@app.route("/")
+@app.route('/')
 def index():
-    return render_template("index.html")
+    print("Loading index.html")   # debug print
+    return render_template('index.html')
 
-@app.route("/home")
+@app.route('/login', methods=['POST'])
+def login():
+    return redirect("/home")
+
+@app.route('/home')
 def home():
-    return render_template("home.html")
+    return render_template('home.html')
 
-@app.route("/sign-to-speech")
+@app.route('/sign-to-speech')
 def sign_to_speech():
-    return render_template("sign_to_speech.html")
+    return render_template('sign_to_speech.html')
 
-@app.route("/speech-to-sign")
+@app.route('/speech-to-sign')
 def speech_to_sign():
-    return render_template("speech_to_sign.html")
+    return render_template('speech_to_sign.html')
 
-@app.route("/about")
+@app.route('/about')
 def about():
-    return render_template("about.html")
+    return render_template('about.html')
+
 
 # ==============================
-# LOAD TRAINED MODELS
+# LOAD TRAINED MODEL
 # ==============================
 
-model_1hand = joblib.load("model.pkl")
-#model_2hand = joblib.load("static_2hand_rf.pkl")
-motion_model = joblib.load("motion_1hand.pkl")
+try:
+    model_1hand = joblib.load(os.path.join(os.path.dirname(__file__), "model.pkl"))
+except:
+    model_1hand = None
+    print("Model not loaded")
+
 
 # ==============================
 # API ENDPOINT
 # ==============================
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
+        if model_1hand is None:
+            return jsonify({"error": "Model not loaded"})
+
         data = request.json
         landmarks = data.get("landmarks")
         hand_count = int(data.get("handCount", 0))
-        is_motion = bool(data.get("isMotion", False))
 
         if not landmarks:
             return jsonify({"prediction": None, "confidence": 0.0})
-        print("Incoming feature length:", len(landmarks))
-
 
         arr = np.array(landmarks).reshape(1, -1)
 
-        # 🔥 Only 1-hand models supported
-        if hand_count == 1 and is_motion:
-            model = motion_model
-        elif hand_count == 1:
-            model = model_1hand
-        else:
-            # 2-hand not supported
+        if hand_count != 1:
             return jsonify({
                 "prediction": None,
                 "confidence": 0.0,
                 "message": "Only 1-hand model supported"
             })
 
-        probs = model.predict_proba(arr)[0]
-        prediction = model.classes_[np.argmax(probs)]
+        probs = model_1hand.predict_proba(arr)[0]
+        prediction = model_1hand.classes_[np.argmax(probs)]
         confidence = float(np.max(probs))
 
         return jsonify({
@@ -83,10 +92,11 @@ def predict():
         print("Prediction error:", e)
         return jsonify({"prediction": None, "confidence": 0.0})
 
+
 # ==============================
-# START SERVER (RENDER)
+# START SERVER
 # ==============================
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)

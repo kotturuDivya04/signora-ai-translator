@@ -1,11 +1,11 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Signora - Home</title>
-     <link rel="stylesheet" href="/static/styles/style.css">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignOra | Home</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/style.css">
 </head>
 
 <body class="home-bg">
@@ -13,38 +13,34 @@
     <!-- TOP NAVBAR -->
     <header class="app-header">
         <div class="logo-container">
-            <img src="/static/assets/logo.png" alt="Signora Logo" class="app-logo">
-            <span class="app-name">Signora</span>
+            <img src="/static/assets/logo.png" alt="SignOra Logo" class="app-logo">
+            <span class="app-name">SignOra</span>
         </div>
     </header>
 
     <!-- HOME SECTION -->
     <div class="home-container">
-        <h1 class="welcome-title">👋Hello, User! Let's connect.</h1>
+        <h1 class="welcome-title">👋 Hello! Let's connect.</h1>
         <p class="choose-text">Choose your mode of communication:</p>
 
-        <!-- HORIZONTAL BUTTON WRAPPER -->
+        <!-- BUTTON ROW -->
         <div class="button-row">
-            <!-- TEAL BUTTON -->
-            <button class="mode-btn sign-btn"
-                    onclick="window.location.href='/sign-to-speech'">
+
+            <a href="/sign-to-speech" class="mode-btn sign-btn">
                 <span>Sign → Speech Translation</span>
                 <span class="btn-icon">🤟</span>
-            </button>
+            </a>
 
-            <!-- ORANGE BUTTON -->
-            <button class="mode-btn speech-btn"
-                    onclick="window.location.href='/speech-to-sign'">
-                <span>Speech → Sign (avatar)</span>
+            <a href="/speech-to-sign" class="mode-btn speech-btn">
+                <span>Speech → Sign (Avatar)</span>
                 <span class="btn-icon">🗣</span>
-            </button>
+            </a>
 
-            <!-- PURPLE BUTTON -->
-            <button class="mode-btn about-btn"
-                    onclick="window.location.href='/about'">
+            <a href="/about" class="mode-btn about-btn">
                 <span>About & Help</span>
                 <span class="btn-icon">🛡</span>
-            </button>
+            </a>
+
         </div>
     </div>
 
