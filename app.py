@@ -7,90 +7,99 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# 🔥 DISABLE TEMPLATE CACHING (VERY IMPORTANT)
+# 🔥 Disable template caching (important for updates)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
 # ==============================
-# PAGE ROUTES (FRONTEND)
+# PAGE ROUTES
 # ==============================
 
 @app.route('/')
 def index():
-    print("Loading index.html")   # debug print
-    return render_template('index.html')
+return render_template('index.html')
 
 @app.route('/login', methods=['POST'])
 def login():
-    return redirect("/home")
+return redirect("/home")
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+return render_template('home.html')
 
 @app.route('/sign-to-speech')
 def sign_to_speech():
-    return render_template('sign_to_speech.html')
+return render_template('sign_to_speech.html')
 
 @app.route('/speech-to-sign')
 def speech_to_sign():
-    return render_template('speech_to_sign.html')
+return render_template('speech_to_sign.html')
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+return render_template('about.html')
 
 
 # ==============================
 # LOAD TRAINED MODEL
 # ==============================
 
+model_1hand = None
+
 try:
-    model_1hand = joblib.load(os.path.join(os.path.dirname(__file__), "model.pkl"))
-except:
-    model_1hand = None
-    print("Model not loaded")
+model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
+model_1hand = joblib.load(model_path)
+print("✅ Model loaded successfully")
+except Exception as e:
+print("❌ Model not loaded:", e)
 
 
 # ==============================
-# API ENDPOINT
+# PREDICTION API
 # ==============================
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        if model_1hand is None:
-            return jsonify({"error": "Model not loaded"})
+try:
+    if model_1hand is None:
+        return jsonify({"prediction": None, "confidence": 0.0})
 
-        data = request.json
-        landmarks = data.get("landmarks")
-        hand_count = int(data.get("handCount", 0))
+    data = request.json
+    landmarks = data.get("landmarks")
+    hand_count = int(data.get("handCount", 0))
 
-        if not landmarks:
-            return jsonify({"prediction": None, "confidence": 0.0})
+    # no hand detected
+    if not landmarks:
+        return jsonify({"prediction": None, "confidence": 0.0})
 
-        arr = np.array(landmarks).reshape(1, -1)
-
-        if hand_count != 1:
-            return jsonify({
-                "prediction": None,
-                "confidence": 0.0,
-                "message": "Only 1-hand model supported"
-            })
-
-        probs = model_1hand.predict_proba(arr)[0]
-        prediction = model_1hand.classes_[np.argmax(probs)]
-        confidence = float(np.max(probs))
-
+    # only 1-hand supported
+    if hand_count != 1:
         return jsonify({
-            "prediction": str(prediction),
-            "confidence": confidence
+            "prediction": None,
+            "confidence": 0.0,
+            "message": "Only 1-hand model supported"
         })
 
-    except Exception as e:
-        print("Prediction error:", e)
-        return jsonify({"prediction": None, "confidence": 0.0})
+    # convert to numpy array
+    arr = np.array(landmarks).reshape(1, -1)
+
+    # predict
+    probs = model_1hand.predict_proba(arr)[0]
+    prediction = model_1hand.classes_[np.argmax(probs)]
+    confidence = float(np.max(probs))
+
+    return jsonify({
+        "prediction": str(prediction),
+        "confidence": confidence
+    })
+
+except Exception as e:
+    print("Prediction error:", e)
+    return jsonify({
+        "prediction": None,
+        "confidence": 0.0
+    })
 
 
 # ==============================
@@ -98,5 +107,5 @@ def predict():
 # ==============================
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+port = int(os.environ.get("PORT", 10000))
+app.run(host="0.0.0.0", port=port, debug=True)
