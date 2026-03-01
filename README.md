@@ -92,6 +92,38 @@ User sees visual sign communication output
 
 ---
 
+## 📸 Interface Preview
+
+### 🔐 Login Page
+![Login](screenshots/login.png)
+
+### 🏠 Home Dashboard
+![Home](screenshots/home.png)
+
+### 🤟 Sign → Speech Translation
+![Sign to Speech](screenshots/sign-to-speech.png)
+
+### 🎙 Speech → Sign Avatar Mode
+![Speech to Sign](screenshots/speech-to-sign.png)
+
+### ℹ️ About & Help
+![About](screenshots/about.png)
+
+## 🌐 Live Demo & Accessibility
+
+SignOra is deployed and accessible online for real-time use.
+
+👉 **Live Demo:** https://your-deployment-link.onrender.com  
+
+You can try the system on:
+
+✔ 📱 Mobile devices  
+✔ 💻 Desktop & laptops  
+
+For the best experience, use **Google Chrome** and allow camera and microphone permissions.
+
+The interface is fully responsive and optimized for seamless accessibility.
+
 ## ⚙️ Installation & Setup
 
 ### Step 1: Clone Repository
@@ -135,11 +167,10 @@ python app.py
 ✔ Allow Microphone Access  
 
 ---
-
 ## 🚀 Future Enhancements
 
 - Motion gesture recognition  
 - Two-hand gesture support  
 - Expanded gesture vocabulary  
-
+- Multiple avatar styles & improved animations  
 ---
