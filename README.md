@@ -109,11 +109,12 @@ User sees visual sign communication output
 ### ℹ️ About & Help
 ![About](screenshots/about.png)
 
+---
 ## 🌐 Live Demo & Accessibility
 
 SignOra is deployed and accessible online for real-time use.
 
-👉 **Live Demo:** https://your-deployment-link.onrender.com  
+👉 **Live Demo:** https://signora-1.onrender.com/ 
 
 You can try the system on:
 
@@ -123,6 +124,8 @@ You can try the system on:
 For the best experience, use **Google Chrome** and allow camera and microphone permissions.
 
 The interface is fully responsive and optimized for seamless accessibility.
+
+---
 
 ## ⚙️ Installation & Setup
 
@@ -173,4 +176,12 @@ python app.py
 - Two-hand gesture support  
 - Expanded gesture vocabulary  
 - Multiple avatar styles & improved animations  
+---
+## 👥 Team Members
+
+- **k.Divya** — Team Lead, ML Model & Backend Integration  
+- **T.Pratiti** — Frontend Development  
+- **K.Abhilash** — API Integration & Documentation  
+- **S.Keerthan** — Testing & Deployment  
+
 ---
