@@ -111,6 +111,7 @@ User sees visual sign communication output
 
 ---
 ## 🌐 Live Demo & Accessibility
+**DEMO VIDEO** https://youtu.be/Ag8II7JFxBo?si=ygTtv-Yg12QG_sQ8
 
 SignOra is deployed and accessible online for real-time use.
 
